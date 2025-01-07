@@ -7,6 +7,7 @@ import { useParams } from "next/navigation";
 import { useContract } from "@/hooks/useContract";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import AddressDisplay from "@/components/AddressDisplay";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export default function DashboardLayout({
     children,
@@ -14,7 +15,6 @@ export default function DashboardLayout({
     children: React.ReactNode;
 }) {
     const [contracts, setContracts] = useState<ContractData[]>([]);
-    const [expandedChains, setExpandedChains] = useState<Set<number>>(new Set());
     const params = useParams();
     const { chainId, address } = params as { chainId?: string; address?: string };
     
@@ -44,69 +44,62 @@ export default function DashboardLayout({
         return acc;
     }, {} as Record<number, ContractData[]>);
 
-    const toggleChain = (chainId: number) => {
-        const newExpanded = new Set(expandedChains);
-        if (newExpanded.has(chainId)) {
-            newExpanded.delete(chainId);
-        } else {
-            newExpanded.add(chainId);
-        }
-        setExpandedChains(newExpanded);
-    };
-
     return (
         <div className="flex min-h-screen">
-            <div className="w-72 border-r bg-muted/30 p-6 space-y-6">
+            <div className="w-80 border-r bg-muted/30 p-6 space-y-6">
                 <Link href="/abi/add">
                     <Card className="p-4 hover:bg-accent/50 transition-all duration-200 cursor-pointer shadow-sm hover:shadow-md">
                         <div className="font-medium text-center text-sm">添加合约</div>
                     </Card>
                 </Link>
-                <div className="space-y-3">
+                
+                <Accordion type="multiple" className="space-y-2">
                     {Object.entries(contractsByChain).map(([chainId, chainContracts]) => (
-                        <div key={chainId} className="space-y-1.5">
-                            <div 
-                                className="flex items-center gap-2 px-3 py-2 hover:bg-accent/50 rounded-lg cursor-pointer transition-colors duration-200"
-                                onClick={() => toggleChain(Number(chainId))}
-                            >
-                                {expandedChains.has(Number(chainId)) ? 
-                                    <ChevronDown className="h-4 w-4 text-muted-foreground" /> : 
-                                    <ChevronRight className="h-4 w-4 text-muted-foreground" />
-                                }
-                                <span className="font-medium text-sm">Chain {chainId}</span>
-                                <span className="text-xs text-muted-foreground ml-auto bg-muted px-2 py-0.5 rounded-full">
-                                    {chainContracts.length}
-                                </span>
-                            </div>
-                            {expandedChains.has(Number(chainId)) && (
-                                <div className="pl-4 space-y-2 animate-in slide-in-from-left-5 duration-200">
-                                    {chainContracts.map((contract) => (
-                                        <Link 
-                                            key={`${contract.chainId}-${contract.address}`}
-                                            href={`/abi/${contract.chainId}/${contract.address}`}
-                                        >
-                                            <Card 
-                                                className={`p-3 hover:bg-accent/50 transition-all duration-200 shadow-sm hover:shadow-md ${
+                        <AccordionItem 
+                            key={chainId} 
+                            value={chainId}
+                            className="border rounded-lg px-2"
+                        >
+                            <AccordionTrigger className="hover:bg-accent/50 rounded-md px-2 [&[data-state=open]>svg]:text-primary">
+                                <div className="flex items-center gap-2">
+                                    <span className="font-medium text-sm">Chain {chainId}</span>
+                                    <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
+                                        {chainContracts.length}
+                                    </span>
+                                </div>
+                            </AccordionTrigger>
+                            <AccordionContent className="space-y-2 pt-2">
+                                {chainContracts.map((contract) => (
+                                    <Link 
+                                        key={`${contract.chainId}-${contract.address}`}
+                                        href={`/abi/${contract.chainId}/${contract.address}`}
+                                        className="block"
+                                    >
+                                        <div 
+                                            className={`
+                                                relative px-4 py-3 rounded-md
+                                                hover:bg-accent/50 transition-all duration-200
+                                                ${
                                                     activeContract?.address === contract.address && 
                                                     activeContract?.chainId === contract.chainId
-                                                        ? "bg-accent border-primary shadow-md"
-                                                        : "bg-card"
-                                                }`}
-                                            >
-                                                <div className="font-medium truncate text-sm">
-                                                    {contract.name || "未命名合约"}
-                                                </div>
-                                                <div className="text-xs text-muted-foreground truncate font-mono mt-1">
-                                                    <AddressDisplay address={contract.address} />
-                                                </div>
-                                            </Card>
-                                        </Link>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
+                                                        ? "bg-accent text-accent-foreground before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-1 before:h-6 before:bg-primary before:rounded-full"
+                                                        : "text-muted-foreground hover:text-foreground"
+                                                }
+                                            `}
+                                        >
+                                            <div className="font-medium truncate text-sm">
+                                                {contract.name || "未命名合约"}
+                                            </div>
+                                            <div className="text-xs opacity-80 truncate font-mono mt-1">
+                                                <AddressDisplay address={contract.address} />
+                                            </div>
+                                        </div>
+                                    </Link>
+                                ))}
+                            </AccordionContent>
+                        </AccordionItem>
                     ))}
-                </div>
+                </Accordion>
             </div>
             <div className="flex-1">
                 {children}
