@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
 import { parseEther } from "viem";
-import { AbiFunction } from "viem";
+import { AbiFunction, AbiParameter } from "viem";
 
 interface Props {
   contract: ContractData;
@@ -65,7 +65,14 @@ function WriteFunctionCard({ contract, func }: { contract: ContractData; func: a
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{func.name}</CardTitle>
+        <CardTitle>
+          <div className="flex items-center gap-2">
+            <span>{func.name}</span>
+            <span className="text-xs text-muted-foreground">
+              returns ({func.outputs.map((o: AbiParameter) => o.type).join(', ')})
+            </span>
+          </div>
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">

@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
 import { Search } from "lucide-react";
-import { AbiFunction } from "viem";
+import type { AbiFunction, AbiParameter } from "viem";
 interface Props {
   contract: ContractData;
 }
@@ -44,7 +44,14 @@ function ViewFunctionCard({ contract, func }: { contract: ContractData; func: an
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{func.name}</CardTitle>
+        <CardTitle>
+          <div className="flex items-center gap-2">
+            <span>{func.name}</span>
+            <span className="text-xs text-muted-foreground">
+                ({func.outputs.map((o: AbiParameter) => o.type).join(', ')})
+            </span>
+          </div>
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
