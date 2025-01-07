@@ -5,7 +5,7 @@ import { type ReadContractErrorType } from '@wagmi/core'
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RefreshCw } from "lucide-react";
-
+import { AbiFunction } from "viem";
 interface Props {
   contract: ContractData;
 }
@@ -22,9 +22,9 @@ export function ReadFunctions({ contract }: Props) {
     <div className="grid gap-4 md:grid-cols-2">
       {readFunctions.map((func, index) => (
         <ReadFunctionCard 
-          key={`${func.name}-${index}`}
+          key={`${(func as AbiFunction).name}-${index}`}
           contract={contract} 
-          func={func} 
+          func={func as AbiFunction} 
         />
       ))}
     </div>

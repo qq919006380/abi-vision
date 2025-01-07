@@ -1,11 +1,11 @@
 import { openDB } from 'idb';
+import { Abi } from 'viem';
 
 export interface ContractData {
   address: string;
-  abi: any[];
+  abi: Abi;
   chainId: number;
   name?: string;
-  timestamp: number;
 }
 
 export interface ContractStore {

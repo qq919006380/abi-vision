@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
 import { Search } from "lucide-react";
-
+import { AbiFunction } from "viem";
 interface Props {
   contract: ContractData;
 }
@@ -23,7 +23,7 @@ export function ViewFunctions({ contract }: Props) {
     <div className="grid gap-4">
       {viewFunctions.map((func) => (
         <ViewFunctionCard 
-          key={func.name} 
+          key={(func as AbiFunction).name} 
           contract={contract} 
           func={func} 
         />

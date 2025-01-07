@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
 import { parseEther } from "viem";
-import { config } from "@/provider/wagmiConfig";
+import { AbiFunction } from "viem";
 
 interface Props {
   contract: ContractData;
@@ -24,9 +24,9 @@ export function WriteFunctions({ contract }: Props) {
     <div className="grid gap-4">
       {writeFunctions.map((func) => (
         <WriteFunctionCard 
-          key={func.name} 
+          key={(func as AbiFunction).name} 
           contract={contract} 
-          func={func} 
+          func={func as AbiFunction} 
         />
       ))}
     </div>

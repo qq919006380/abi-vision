@@ -23,9 +23,9 @@ export default function ContractPage({ params }: Props) {
   if (!contract) {
     return notFound();
   }
-
+  console.log(contract);
   return (
-    <div className="container mx-auto py-8">
+    <div className="container mx-auto py-8 px-4">
       <ContractHeader contract={contract} />
       <ContractTabs contract={contract} />
     </div>

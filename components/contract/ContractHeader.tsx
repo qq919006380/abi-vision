@@ -15,7 +15,6 @@ export function ContractHeader({ contract }: Props) {
   const chains = useChains();
   const chain = chains.find(c => c.id === chainId);
   const router = useRouter();
-
   const getExplorerUrl = () => {
     if (!chain?.blockExplorers?.default?.url) return "";
     return `${chain.blockExplorers.default.url}/address/${contract.address}`;
@@ -39,7 +38,7 @@ export function ContractHeader({ contract }: Props) {
 
   return (
     <div className="mb-8 space-y-4">
-      <div className="flex items-center justify-between">
+      <div className="flex items-end justify-between">
         <div>
           <h1 className="text-2xl font-bold">
             {contract.name || "未命名合约"}
@@ -82,13 +81,6 @@ export function ContractHeader({ contract }: Props) {
             <Trash2 className="h-4 w-4" />
           </Button>
         </div>
-      </div>
-      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-        <span>Chain: {chain?.name || contract.chainId}</span>
-        •
-        <span>{contract.abi.length} ABI Functions</span>
-        •
-        <span>Added: {new Date(contract.timestamp).toLocaleDateString()}</span>
       </div>
     </div>
   );
