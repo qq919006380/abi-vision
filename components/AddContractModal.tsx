@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@/components/ui/button";
+import { Button,ButtonProps } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -7,8 +7,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { erc20Abi, erc721Abi, erc4626Abi } from "viem";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { contractDB } from "@/lib/db";
-import { Plus } from "lucide-react";
+import { ContractData, contractDB } from "@/lib/db";
+import { Plus, Pencil } from "lucide-react";
 import { useChains } from "wagmi";
 
 const STANDARD_ABIS = {
@@ -17,11 +17,16 @@ const STANDARD_ABIS = {
   ERC4626: erc4626Abi,
 };
 
-export default function AddContractModal({buttonClassName}: {buttonClassName?: string}) {
-  const [address, setAddress] = useState("");
-  const [abi, setAbi] = useState("");
-  const [name, setName] = useState("");
-  const [selectedChainId, setSelectedChainId] = useState<string>("");
+interface Props extends ButtonProps {
+  contract?: ContractData;
+}
+
+export default function AddContractModal({ contract, className, ...buttonProps }: Props) {
+  const isEdit = !!contract;
+  const [address, setAddress] = useState(contract?.address ?? "");
+  const [abi, setAbi] = useState(contract ? JSON.stringify(contract.abi, null, 2) : "");
+  const [name, setName] = useState(contract?.name ?? "");
+  const [selectedChainId, setSelectedChainId] = useState<string>(contract?.chainId.toString() ?? "");
   const router = useRouter();
   const chains = useChains();
 
@@ -36,34 +41,53 @@ export default function AddContractModal({buttonClassName}: {buttonClassName?: s
     }
     
     try {
-      await contractDB.addContract({
-        address,
-        abi: JSON.parse(abi),
-        chainId: parseInt(selectedChainId),
-        name,
-      });
-      router.push('/abi');
+      if (isEdit) {
+        await contractDB.updateContract({
+          address,
+          abi: JSON.parse(abi),
+          chainId: parseInt(selectedChainId),
+          name,
+        });
+        router.refresh();
+      } else {
+        await contractDB.addContract({
+          address,
+          abi: JSON.parse(abi),
+          chainId: parseInt(selectedChainId),
+          name,
+        });
+        router.push(`/abi/${selectedChainId}/${address}`);
+      }
     } catch (error) {
-      console.error('Failed to add contract:', error);
+      console.error('Failed to save contract:', error);
     }
   };
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className={buttonClassName}>
-          <Plus className="mr-2 h-4 w-4" />
-          Add Contract
-        </Button>
+        {isEdit ? (
+          <Button variant="outline" size="icon" className={className} {...buttonProps} title="编辑">
+            <Pencil className="h-4 w-4" />
+          </Button>
+        ) : (
+          <Button className={className} {...buttonProps}>
+            <Plus className="mr-2 h-4 w-4" />
+            Add Contract
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add New Contract</DialogTitle>
+          <DialogTitle>{isEdit ? '编辑合约' : 'Add New Contract'}</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
           <div>
             <label className="text-sm font-medium">Chain</label>
-            <Select onValueChange={setSelectedChainId} value={selectedChainId}>
+            <Select 
+              onValueChange={setSelectedChainId} 
+              value={selectedChainId}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Select a chain" />
               </SelectTrigger>
@@ -89,7 +113,7 @@ export default function AddContractModal({buttonClassName}: {buttonClassName?: s
             <Input 
               value={address} 
               onChange={(e) => setAddress(e.target.value)}
-              placeholder="0x..." 
+              placeholder="0x..."
             />
           </div>
           <div>
@@ -115,7 +139,7 @@ export default function AddContractModal({buttonClassName}: {buttonClassName?: s
             />
           </div>
           <Button onClick={handleSubmit} className="w-full">
-            Submit
+            {isEdit ? '保存' : 'Submit'}
           </Button>
         </div>
       </DialogContent>

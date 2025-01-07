@@ -5,6 +5,7 @@ import { useChainId, useChains } from "wagmi";
 import { Share2, ExternalLink, Pencil, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { contractDB } from "@/lib/db";
+import  AddContractModal  from "@/components/AddContractModal";
 
 interface Props {
   contract: ContractData;
@@ -64,14 +65,10 @@ export function ContractHeader({ contract }: Props) {
           >
             <ExternalLink className="h-4 w-4" />
           </Button>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() => router.push(`/edit/${contract.chainId}/${contract.address}`)}
-            title="编辑"
+          <AddContractModal
+            contract={contract}
           >
-            <Pencil className="h-4 w-4" />
-          </Button>
+          </AddContractModal>
           <Button
             variant="outline"
             size="icon"

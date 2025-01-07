@@ -47,8 +47,8 @@ export default function DashboardLayout({
     return (
         <div className="flex min-h-screen">
             <div className="w-80 border-r bg-muted/30 p-6 space-y-6 ">
-                <AddContractModal buttonClassName="w-full font-bold" />
-
+                <AddContractModal className="w-full font-bold"  />
+                    
                 <Accordion type="multiple" className="space-y-2">
                     {Object.entries(contractsByChain).map(([chainId, chainContracts]) => (
                         <AccordionItem

@@ -65,6 +65,17 @@ class ContractDB {
     const db = await this.init();
     return db.delete('contracts', [chainId, address]);
   }
+
+  async updateContract(contract: ContractData) {
+    const contracts = await this.getAllContracts();
+    const index = Object.values(contracts).findIndex(
+      c => c.address === contract.address && c.chainId === contract.chainId
+    );
+    if (index > -1) {
+      const db = await this.init();
+      return db.put('contracts', contract);
+    }
+  }
 }
 
 export const contractDB = new ContractDB(); 
