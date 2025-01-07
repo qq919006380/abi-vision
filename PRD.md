@@ -5,6 +5,10 @@ https://github.com/shazow/whatsabi
     - 简洁，人机交互
     - 存储，本地存储
 - [network][contract]
+    tabs
+        - 只读
+        - 查询
+        - 操作
     - tools
         - 分享
         - 查看ABI [可视化ABI]
