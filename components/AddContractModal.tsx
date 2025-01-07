@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { erc20Abi, erc721Abi, erc4626Abi } from "viem";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { openDB } from 'idb';
+import { contractDB } from "@/lib/db";
 
 const STANDARD_ABIS = {
   ERC20: erc20Abi,
@@ -25,22 +25,16 @@ export default function AddContractModal() {
   };
 
   const handleSubmit = async () => {
-    // 打开 IndexDB
-    const db = await openDB('contracts', 1, {
-      upgrade(db) {
-        // 创建一个 store 来存储合约信息
-        db.createObjectStore('contracts', { keyPath: 'address' });
-      },
-    });
-
-    // 存储合约信息
-    await db.put('contracts', {
-      address,
-      abi: JSON.parse(abi),
-      timestamp: Date.now(),
-    });
-
-    router.push('/dashboard');
+    try {
+      await contractDB.addContract({
+        address,
+        abi: JSON.parse(abi),
+        chainId: 1, // 需要添加 chainId 输入或从 wagmi 获取
+      });
+      router.push('/abi');
+    } catch (error) {
+      console.error('Failed to add contract:', error);
+    }
   };
 
   return (

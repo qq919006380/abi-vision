@@ -1,8 +1,10 @@
 "use client";
 import { ContractData } from "@/lib/db";
-import { useContractRead } from "wagmi";
+import { useReadContract } from "wagmi";
+import { type ReadContractErrorType } from '@wagmi/core'
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { RefreshCw } from "lucide-react";
 
 interface Props {
   contract: ContractData;
@@ -18,9 +20,9 @@ export function ReadFunctions({ contract }: Props) {
 
   return (
     <div className="grid gap-4 md:grid-cols-2">
-      {readFunctions.map((func) => (
+      {readFunctions.map((func, index) => (
         <ReadFunctionCard 
-          key={func.name} 
+          key={`${func.name}-${index}`}
           contract={contract} 
           func={func} 
         />
@@ -30,7 +32,8 @@ export function ReadFunctions({ contract }: Props) {
 }
 
 function ReadFunctionCard({ contract, func }: { contract: ContractData; func: any }) {
-  const { data, isError, isLoading, refetch } = useContractRead({
+
+  const { data, isError,error, isLoading, refetch } = useReadContract({
     address: contract.address as `0x${string}`,
     abi: [func],
     functionName: func.name,
@@ -47,6 +50,7 @@ function ReadFunctionCard({ contract, func }: { contract: ContractData; func: an
             onClick={() => refetch()}
             disabled={isLoading}
           >
+            <RefreshCw className="h-4 w-4" />
             刷新
           </Button>
         </CardTitle>
@@ -55,7 +59,7 @@ function ReadFunctionCard({ contract, func }: { contract: ContractData; func: an
         {isLoading ? (
           <div>Loading...</div>
         ) : isError ? (
-          <div className="text-destructive">Error reading contract</div>
+          <div className="text-destructive">{error.shortMessage}</div>
         ) : (
           <div className="font-mono break-all">
             {JSON.stringify(data)}

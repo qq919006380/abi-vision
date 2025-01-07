@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
+import { Search } from "lucide-react";
 
 interface Props {
   contract: ContractData;
@@ -67,6 +68,8 @@ function ViewFunctionCard({ contract, func }: { contract: ContractData; func: an
             onClick={() => refetch()} 
             disabled={isLoading}
           >
+              <Search className="h-4 w-4" />
+
             查询
           </Button>
           {isLoading ? (
