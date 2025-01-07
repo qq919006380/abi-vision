@@ -8,6 +8,7 @@ import { useContract } from "@/hooks/useContract";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import AddressDisplay from "@/components/AddressDisplay";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import AddContractModal from "@/components/AddContractModal";
 
 export default function DashboardLayout({
     children,
@@ -46,12 +47,8 @@ export default function DashboardLayout({
 
     return (
         <div className="flex min-h-screen">
-            <div className="w-80 border-r bg-muted/30 p-6 space-y-6">
-                <Link href="/abi/add">
-                    <Card className="p-4 hover:bg-accent/50 transition-all duration-200 cursor-pointer shadow-sm hover:shadow-md">
-                        <div className="font-medium text-center text-sm">添加合约</div>
-                    </Card>
-                </Link>
+            <div className="w-80 border-r bg-muted/30 p-6 space-y-6 ">
+                <AddContractModal buttonClassName="w-full font-bold" />
                 
                 <Accordion type="multiple" className="space-y-2">
                     {Object.entries(contractsByChain).map(([chainId, chainContracts]) => (

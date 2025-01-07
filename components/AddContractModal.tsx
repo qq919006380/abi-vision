@@ -15,7 +15,7 @@ const STANDARD_ABIS = {
   ERC4626: erc4626Abi,
 };
 
-export default function AddContractModal() {
+export default function AddContractModal({buttonClassName}: {buttonClassName?: string}) {
   const [address, setAddress] = useState("");
   const [abi, setAbi] = useState("");
   const router = useRouter();
@@ -40,7 +40,7 @@ export default function AddContractModal() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>Add Contract</Button>
+        <Button className={buttonClassName}>Add Contract</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
