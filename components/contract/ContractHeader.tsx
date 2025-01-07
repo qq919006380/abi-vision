@@ -6,6 +6,7 @@ import { Share2, ExternalLink, Pencil, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { contractDB } from "@/lib/db";
 import  AddContractModal  from "@/components/AddContractModal";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 
 interface Props {
   contract: ContractData;
@@ -31,10 +32,8 @@ export function ContractHeader({ contract }: Props) {
   };
 
   const handleDelete = async () => {
-    if (!confirm("确定要删除这个合约吗？")) return;
-    
     await contractDB.deleteContract(contract.chainId, contract.address);
-    router.push("/");
+    router.push("/abi");
   };
 
   return (
@@ -42,7 +41,7 @@ export function ContractHeader({ contract }: Props) {
       <div className="flex items-end justify-between">
         <div>
           <h1 className="text-2xl font-bold">
-            {contract.name || "未命名合约"}
+            {contract.name || "Unnamed Contract"}
           </h1>
           <p className="text-muted-foreground font-mono">
             {contract.address}
@@ -53,7 +52,7 @@ export function ContractHeader({ contract }: Props) {
             variant="outline"
             size="icon"
             onClick={handleShare}
-            title="分享"
+            title="Share"
           >
             <Share2 className="h-4 w-4" />
           </Button>
@@ -61,22 +60,36 @@ export function ContractHeader({ contract }: Props) {
             variant="outline"
             size="icon"
             onClick={() => window.open(getExplorerUrl(), "_blank")}
-            title="在区块浏览器中查看"
+            title="View in Explorer"
           >
             <ExternalLink className="h-4 w-4" />
           </Button>
           <AddContractModal
             contract={contract}
-          >
-          </AddContractModal>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={handleDelete}
-            title="删除"
-          >
-            <Trash2 className="h-4 w-4" />
-          </Button>
+          />
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                title="Delete"
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Delete Contract</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Are you sure you want to delete this contract? This action cannot be undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={handleDelete}>Delete</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </div>
     </div>
