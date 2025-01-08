@@ -7,35 +7,13 @@ import {
   optimism,
   polygon,
   base,
-  avalanche,
-  baseSepolia,
-  bsc,
-  bscTestnet,
-  polygonMumbai,
-  polygonZkEvmTestnet,
-  polygonZkEvm,
 } from "wagmi/chains";
 import { getDefaultConfig } from "@rainbow-me/rainbowkit";
 
 export const config = getDefaultConfig({
   appName: "Abi Vision",
   projectId: process.env.NEXT_PUBLIC_PROJECT_ID as string,
-  chains: [
-    mainnet,
-    sepolia,
-    blast,
-    arbitrum,
-    optimism,
-    polygon,
-    base,
-    avalanche,
-    baseSepolia,
-    bsc,
-    bscTestnet,
-    polygonMumbai,
-    polygonZkEvmTestnet,
-    polygonZkEvm,
-  ],
+  chains: [mainnet, sepolia, blast, arbitrum, optimism, polygon, base],
   ssr: true,
   transports: {
     [mainnet.id]: http(),
@@ -45,7 +23,5 @@ export const config = getDefaultConfig({
     [optimism.id]: http(),
     [polygon.id]: http(),
     [base.id]: http(),
-    [avalanche.id]: http(),
-    [baseSepolia.id]: http(),
   },
 });
