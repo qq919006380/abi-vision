@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { erc20Abi, erc721Abi, erc4626Abi } from "viem";
+import { erc20Abi, erc721Abi, erc4626Abi, Chain } from "viem";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ContractData, contractDB } from "@/lib/db";
 import { Plus, Pencil } from "lucide-react";
@@ -28,26 +28,36 @@ export default function AddContractModal({ contract, className, ...buttonProps }
     const [name, setName] = useState(contract?.name ?? "");
     const [selectedChainId, setSelectedChainId] = useState<string>(contract?.chainId.toString() ?? "");
     const router = useRouter();
+    const [allChains, setAllChains] = useState<{ id: number, name: string }[]>([]);
     const chains = useChains();
     const { chainId: currentChainId } = useAccount();
-    // useEffect(() => {
-    //     let fetchChainId = async () => {
-    //         const chainId = parseInt(
-    //             await window.ethereum.request({
-    //                 method: 'eth_chainId',
-    //             }));
+    useEffect(() => {
+        // let fetchChainId = async () => {
+        //     const chainId = parseInt(
+        //         await window.ethereum.request({
+        //             method: 'eth_chainId',
+        //         }));
 
-    //         console.log("fetchChainId", chainId);
-    //     }
-    //     fetchChainId();
-    // }, []);
+        //     console.log("fetchChainId", chainId);
+        // }
+        // fetchChainId();
+
+
+        const allChains = chains.some(chain => chain.id === currentChainId)
+            ? chains
+            : typeof currentChainId === 'number' ? [...chains, { id: currentChainId, name: `ChainId: ${currentChainId}` }] : chains;
+
+        setAllChains([...allChains]);
+        console.log("allChains", allChains);
+
+    }, [chains, currentChainId]);
     const handleAbiSelect = (value: keyof typeof STANDARD_ABIS) => {
         setAbi(JSON.stringify(STANDARD_ABIS[value], null, 2));
     };
 
     const handleSubmit = async () => {
         if (!selectedChainId) {
-            alert("请选择链");
+            alert("Please select a chain");
             return;
         }
 
@@ -74,11 +84,14 @@ export default function AddContractModal({ contract, className, ...buttonProps }
         }
     };
 
+
+
+
     return (
         <Dialog>
             <DialogTrigger asChild>
                 {isEdit ? (
-                    <Button variant="outline" size="icon" className={className} {...buttonProps} title="编辑">
+                    <Button variant="outline" size="icon" className={className} {...buttonProps} title="Edit">
                         <Pencil className="h-4 w-4" />
                     </Button>
                 ) : (
@@ -90,7 +103,7 @@ export default function AddContractModal({ contract, className, ...buttonProps }
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>{isEdit ? '编辑合约' : 'Add New Contract'}</DialogTitle>
+                    <DialogTitle>{isEdit ? 'Edit Contract' : 'Add New Contract'}</DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4">
                     <div>
@@ -103,9 +116,9 @@ export default function AddContractModal({ contract, className, ...buttonProps }
                                 <SelectValue placeholder="Select a chain" />
                             </SelectTrigger>
                             <SelectContent>
-                                {chains.map((chain) => (
+                                {allChains.map((chain) => (
                                     <SelectItem key={chain.id} value={chain.id.toString()}>
-                                        {chain.name}
+                                        {chain.name} {currentChainId === chain.id && <span className="ml-2 text-xs text-blue-500">(Connected)</span>}
                                     </SelectItem>
                                 ))}
                             </SelectContent>
@@ -150,7 +163,7 @@ export default function AddContractModal({ contract, className, ...buttonProps }
                         />
                     </div>
                     <Button onClick={handleSubmit} className="w-full">
-                        {isEdit ? '保存' : 'Submit'}
+                        {isEdit ? 'Save' : 'Submit'}
                     </Button>
                 </div>
             </DialogContent>
