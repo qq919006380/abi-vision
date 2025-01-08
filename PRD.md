@@ -5,7 +5,25 @@ https://github.com/shazow/whatsabi
     - 简洁，人机交互
     - 存储，本地存储
 - [network][contract]
-    tabs
+    - 添加编辑/编辑合约
+        - 常规链：如果用户当前链不在我定义的常规链里面，那么就select下面就自动添加一个option value是使用当前链接的网络
+        - 添加/编辑自定义链
+        (localhost) - Hardhat Provider
+            注意: 要在您的系统里运行 Hardhat 网络节点, 进到 hardhat 项目目录并且运行命令:
+            npx hardhat node
+            更多信息, 访问: Hardhat 文档
+            Hardhat JSON-RPC Endpoint:
+            http://127.0.0.1:8545
+        (localhost) - Foundry Provider
+            注意: 要在您的系统里运行 Anvil, 运行:
+            curl -L https://foundry.paradigm.xyz | bash
+            anvil
+            更多信息, 访问: Foundry 文档
+            Anvil JSON-RPC Endpoint:
+            http://127.0.0.1:8545
+
+
+    - tabs
         - 只读
         - 查询
         - 操作

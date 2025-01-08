@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { ContractData, contractDB } from "@/lib/db";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { useContract } from "@/hooks/useContract";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import AddressDisplay from "@/components/AddressDisplay";
@@ -18,23 +18,25 @@ export default function DashboardLayout({
 }) {
     const [contracts, setContracts] = useState<ContractData[]>([]);
     const params = useParams();
+    const pathname = usePathname();
     const { chainId, address } = params as { chainId?: string; address?: string };
     const chains = useChains();
     const { contract: activeContract } = useContract(
         chainId ? Number(chainId) : 0,
         address || ''
     );
-    useEffect(() => {
-        const loadContracts = async () => {
-            const allContracts = await contractDB.getAllContracts();
-            const contractsList = Object.values(allContracts).flatMap((chainContracts): ContractData[] =>
-                Object.values(chainContracts)
-            );
-            setContracts(contractsList);
-        };
 
+    const loadContracts = async () => {
+        const allContracts = await contractDB.getAllContracts();
+        const contractsList = Object.values(allContracts).flatMap((chainContracts): ContractData[] =>
+            Object.values(chainContracts)
+        );
+        setContracts(contractsList);
+    };
+
+    useEffect(() => {
         loadContracts();
-    }, []);
+    }, [pathname]);
 
     const contractsByChain = contracts.reduce((acc, contract) => {
         if (!acc[contract.chainId]) {
