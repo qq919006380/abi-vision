@@ -2,7 +2,7 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { FileText } from 'lucide-react';
+import { FileText, Wallet, LinkIcon, User } from 'lucide-react';
 import Image from 'next/image';
 export default function Header() {
     return (
@@ -50,56 +50,70 @@ export default function Header() {
                                     {(() => {
                                         if (!connected) {
                                             return (
-                                                <button onClick={openConnectModal} type="button">
+                                                <Button
+                                                    onClick={openConnectModal}
+                                                    type="button"
+                                                    className="bg-primary hover:bg-primary/90 flex items-center gap-2"
+                                                >
+                                                    <Wallet className="h-4 w-4" />
                                                     Connect Wallet
-                                                </button>
+                                                </Button>
                                             );
                                         }
 
-                                        if (chain.unsupported) {
-                                            return (
-                                                <button onClick={openChainModal} type="button">
-                                                    Wrong network
-                                                </button>
-                                            );
-                                        }
+
 
                                         return (
-                                            <div style={{ display: 'flex', gap: 12 }}>
-                                                <button
+                                            <div className="flex items-center gap-3">
+                                                {chain.unsupported ? <Button
                                                     onClick={openChainModal}
-                                                    style={{ display: 'flex', alignItems: 'center' }}
                                                     type="button"
+                                                    variant="outline"
+                                                    className="flex items-center gap-2"
                                                 >
-                                                    {chain.hasIcon && (
-                                                        <div
-                                                            style={{
-                                                                background: chain.iconBackground,
-                                                                width: 22,
-                                                                height: 22,
-                                                                borderRadius: 999,
-                                                                overflow: 'hidden',
-                                                                marginRight: 4,
-                                                            }}
-                                                        >
-                                                            {chain.iconUrl && (
-                                                                <img
-                                                                    alt={chain.name ?? 'Chain icon'}
-                                                                    src={chain.iconUrl}
-                                                                    style={{ width: 22, height: 22 }}
-                                                                />
-                                                            )}
-                                                        </div>
-                                                    )}
-                                                    {chain.name}
-                                                </button>
+                                                    <LinkIcon className="h-4 w-4" />
+                                                    Current Chain Id {chain.id}
+                                                </Button>
+                                                    :
+                                                    <Button
+                                                        onClick={openChainModal}
+                                                        type="button"
+                                                        variant="outline"
+                                                        className="flex items-center gap-2"
+                                                    >
+                                                        {chain.hasIcon && (
+                                                            <div
+                                                                className="w-5 h-5 rounded-full overflow-hidden"
+                                                                style={{
+                                                                    background: chain.iconBackground,
+                                                                }}
+                                                            >
+                                                                {chain.iconUrl && (
+                                                                    <img
+                                                                        alt={chain.name ?? 'Chain icon'}
+                                                                        src={chain.iconUrl}
+                                                                        className="w-5 h-5"
+                                                                    />
+                                                                )}
+                                                            </div>
+                                                        )}
+                                                        {chain.name}
+                                                    </Button>}
 
-                                                <button onClick={openAccountModal} type="button">
+                                                <Button
+                                                    onClick={openAccountModal}
+                                                    type="button"
+                                                    variant="outline"
+                                                    className="flex items-center gap-2"
+                                                >
+                                                    <User className="h-4 w-4" />
                                                     {account.displayName}
-                                                    {account.displayBalance
-                                                        ? ` (${account.displayBalance})`
-                                                        : ''}
-                                                </button>
+                                                    {account.displayBalance && (
+                                                        <span className="text-muted-foreground">
+                                                            ({account.displayBalance})
+                                                        </span>
+                                                    )}
+                                                </Button>
                                             </div>
                                         );
                                     })()}
