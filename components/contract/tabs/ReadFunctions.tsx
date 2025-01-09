@@ -41,10 +41,19 @@ function ReadFunctionCard({ contract, func }: { contract: ContractData; func: Ab
 
     // Custom serializer to handle BigInt values
     const formatData = (data: any) => {
+        // 首先处理 undefined 或 null 的情况
+        if (data === null || data === undefined) return '';
+        
+        // 然后处理其他类型
         if (typeof data === 'string') return data;
         if (typeof data === 'bigint') return data.toString();
-        if (data === null || data === undefined) return '';
-        return JSON.stringify(data);
+        
+        // 对于其他类型（数组、对象等）
+        try {
+            return JSON.stringify(data);
+        } catch (e) {
+            return ''; // 如果 JSON.stringify 失败，返回空字符串
+        }
     };
 
     return (
@@ -63,8 +72,7 @@ function ReadFunctionCard({ contract, func }: { contract: ContractData; func: Ab
                         onClick={() => refetch()}
                         disabled={isLoading}
                     >
-                        <RefreshCw className="h-4 w-4" />
-                        刷新
+                        <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
                     </Button>
                 </CardTitle>
             </CardHeader>

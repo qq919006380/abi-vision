@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { ContractData, contractDB } from "@/lib/db";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
@@ -38,19 +38,33 @@ export default function DashboardLayout({
         loadContracts();
     }, [pathname]);
 
-    const contractsByChain = contracts.reduce((acc, contract) => {
-        if (!acc[contract.chainId]) {
-            acc[contract.chainId] = [];
-        }
-        acc[contract.chainId].push(contract);
-        return acc;
-    }, {} as Record<number, ContractData[]>);
+    const contractsByChain = useMemo(() =>
+        contracts.reduce((acc, contract) => {
+            if (!acc[contract.chainId]) {
+                acc[contract.chainId] = [];
+            }
+            acc[contract.chainId].push(contract);
+            return acc;
+        }, {} as Record<number, ContractData[]>)
+        , [contracts]);
+
+    const [openSections, setOpenSections] = useState<string[]>([]);
+
+    useEffect(() => {
+        setOpenSections(Object.keys(contractsByChain));
+    }, [contractsByChain]);
+
     return (
         <div className="flex min-h-screen">
             <div className="w-80 border-r bg-muted/30 p-6 space-y-6 ">
-                <AddContractModal className="w-full font-bold"  />
-                    
-                <Accordion type="multiple" className="space-y-2">
+                <AddContractModal className="w-full font-bold" />
+
+                <Accordion
+                    type="multiple"
+                    className="space-y-2"
+                    value={openSections}
+                    onValueChange={setOpenSections}
+                >
                     {Object.entries(contractsByChain).map(([chainId, chainContracts]) => (
                         <AccordionItem
                             key={chainId}
@@ -60,10 +74,10 @@ export default function DashboardLayout({
                             <AccordionTrigger className="hover:bg-accent/50 rounded-md px-2 [&[data-state=open]>svg]:text-primary">
                                 <div className="flex justify-between w-full items-center gap-2">
                                     <span className="font-medium text-sm">
-                                        {chains.find(chain => chain.id === Number(chainId))?.name||`ChainId: ${chainId}`}
+                                        {chains.find(chain => chain.id === Number(chainId))?.name || `ChainId: ${chainId}`}
                                     </span>
                                     <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
-                                        {chains.find(chain => chain.id === Number(chainId))?.id||chainId}
+                                        {chains.find(chain => chain.id === Number(chainId))?.id || chainId}
                                     </span>
                                 </div>
                             </AccordionTrigger>
