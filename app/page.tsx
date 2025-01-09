@@ -26,8 +26,8 @@ export default function Home() {
   ];
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gray-200">
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#999_1px,transparent_1px),linear-gradient(to_bottom,#999_1px,transparent_1px)] bg-[size:30px_30px] opacity-30" />
+    <div className="relative min-h-screen overflow-hidden ">
+      <div className="absolute bg-slate-300 inset-0 bg-[linear-gradient(to_right,#999_1px,transparent_1px),linear-gradient(to_bottom,#999_1px,transparent_1px)] bg-[size:50px_50px] opacity-30" />
       
       {/* 重新设计的主要内容区域 */}
       <div className="relative container mx-auto px-4">

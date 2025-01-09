@@ -71,10 +71,10 @@ export const metadata: Metadata = {
     maximumScale: 1,
   },
    
-  manifest: '/site.webmanifest',
-  verification: {
-    google: 'your-google-site-verification', // Add Google Search Console verification code
-  },
+  // manifest: '/site.webmanifest',
+  // verification: {
+  //   google: 'your-google-site-verification', // Add Google Search Console verification code
+  // },
 };
 
 import Header from '@/components/header';
