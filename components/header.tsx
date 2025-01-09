@@ -3,15 +3,17 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { FileText } from 'lucide-react';
-
+import Image from 'next/image';
 export default function Header() {
     return (
         <header className="border-b border-border">
             <div className="container mx-auto px-4 h-16 flex items-center justify-between">
                 <div className="flex items-center gap-6">
+                    <Image src="/logo.jpg" alt="Abi Vision" width={55} height={55} />
                     <Link href="/" className="text-xl font-bold">
                         Abi Vision
                     </Link>
+
                 </div>
                 <div className="flex items-center gap-4">
                     <ConnectButton.Custom>
@@ -73,8 +75,8 @@ export default function Header() {
                                                         <div
                                                             style={{
                                                                 background: chain.iconBackground,
-                                                                width: 12,
-                                                                height: 12,
+                                                                width: 22,
+                                                                height: 22,
                                                                 borderRadius: 999,
                                                                 overflow: 'hidden',
                                                                 marginRight: 4,
@@ -84,7 +86,7 @@ export default function Header() {
                                                                 <img
                                                                     alt={chain.name ?? 'Chain icon'}
                                                                     src={chain.iconUrl}
-                                                                    style={{ width: 12, height: 12 }}
+                                                                    style={{ width: 22, height: 22 }}
                                                                 />
                                                             )}
                                                         </div>

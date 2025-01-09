@@ -70,15 +70,7 @@ export const metadata: Metadata = {
     initialScale: 1,
     maximumScale: 1,
   },
-  icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
-    other: {
-      rel: 'mask-icon',
-      url: '/safari-pinned-tab.svg',
-    },
-  },
+   
   manifest: '/site.webmanifest',
   verification: {
     google: 'your-google-site-verification', // Add Google Search Console verification code
