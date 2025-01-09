@@ -9,42 +9,44 @@ import Link from 'next/link'
 export default function Home() {
   const features = [
     {
-      icon: <Code className="w-8 h-8 text-white" />,
-      title: "开源透明",
-      description: "完全开源的代码库，支持社区审计和贡献"
+      icon: <Code className="w-8 h-8 text-black" />,
+      title: "Open Source",
+      description: "Fully open-source codebase, supporting community audit and contributions"
     },
     {
-      icon: <Shield className="w-8 h-8 text-white" />,
-      title: "安全可靠",
-      description: "数据完全存储在本地，无需担心隐私泄露"
+      icon: <Shield className="w-8 h-8 text-black" />,
+      title: "Secure & Reliable",
+      description: "Data stored locally, ensuring your privacy"
     },
     {
-      icon: <Database className="w-8 h-8 text-white" />,
-      title: "简单易用",
-      description: "直观的可视化界面，让智能合约交互更简单"
+      icon: <Database className="w-8 h-8 text-black" />,
+      title: "User Friendly",
+      description: "Intuitive visual interface for simpler smart contract interactions"
     }
   ];
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-black">
-      {/* 背景装饰 */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px]" />
-      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-blue-500/10 to-purple-500/10" />
+    <div className="relative min-h-screen overflow-hidden bg-white">
+      {/* Background decorations */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#e5e5e5_1px,transparent_1px),linear-gradient(to_bottom,#e5e5e5_1px,transparent_1px)] bg-[size:14px_24px]" />
+      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-blue-500/5 to-purple-500/5" />
       
-      {/* 主要内容 */}
+      {/* Main content */}
       <div className="relative container mx-auto px-4">
         <div className="min-h-screen flex flex-col items-center justify-center">
           {/* Hero Section */}
           <div className="text-center space-y-8 max-w-4xl">
             <div className="relative inline-block">
-              <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg blur opacity-25"></div>
-              <h1 className="relative text-8xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
-                ABI Vision
+              <h1 className="relative text-8xl font-bold tracking-tighter">
+                <span className="inline-block bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text hover:scale-105 transition-transform duration-300">
+                  ABI Vision
+                </span>
               </h1>
+              <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-blue-600 to-purple-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
             </div>
             
-            <p className="text-2xl text-gray-400 max-w-2xl mx-auto">
-              简化智能合约交互的可视化平台
+            <p className="text-2xl text-gray-600 max-w-2xl mx-auto">
+              Visual Platform for Simplified Smart Contract Interaction
             </p>
 
             <div className="flex items-center justify-center gap-6 pt-8">
@@ -71,15 +73,15 @@ export default function Home() {
             {features.map((feature, index) => (
               <div
                 key={index}
-                className="group relative rounded-xl border border-gray-800 bg-black/50 backdrop-blur-sm p-6 hover:border-gray-700 transition-all duration-300"
+                className="group relative rounded-xl border border-gray-200 bg-white/50 backdrop-blur-sm p-6 hover:border-gray-300 transition-all duration-300"
               >
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl opacity-0 group-hover:opacity-10 transition duration-300" />
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl opacity-0 group-hover:opacity-5 transition duration-300" />
                 <div className="relative flex flex-col items-center text-center space-y-4">
-                  <div className="p-3 rounded-lg bg-gray-900/50 border border-gray-800">
+                  <div className="p-3 rounded-lg bg-gray-100/50 border border-gray-200">
                     {feature.icon}
                   </div>
-                  <h2 className="text-xl font-medium text-gray-200">{feature.title}</h2>
-                  <p className="text-gray-400 text-sm">
+                  <h2 className="text-xl font-medium text-gray-800">{feature.title}</h2>
+                  <p className="text-gray-600 text-sm">
                     {feature.description}
                   </p>
                 </div>
@@ -89,9 +91,9 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 装饰性元素 */}
-      <div className="fixed top-1/4 left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl" />
-      <div className="fixed bottom-1/4 right-10 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl" />
+      {/* Decorative elements */}
+      <div className="fixed top-1/4 left-10 w-72 h-72 bg-blue-500/5 rounded-full blur-3xl" />
+      <div className="fixed bottom-1/4 right-10 w-72 h-72 bg-purple-500/5 rounded-full blur-3xl" />
     </div>
   );
 }
