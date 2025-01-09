@@ -27,7 +27,7 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-gray-200">
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#e5e5e5_1px,transparent_1px),linear-gradient(to_bottom,#e5e5e5_1px,transparent_1px)] bg-[size:14px_24px]" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#999_1px,transparent_1px),linear-gradient(to_bottom,#999_1px,transparent_1px)] bg-[size:30px_30px] opacity-30" />
       
       {/* 重新设计的主要内容区域 */}
       <div className="relative container mx-auto px-4">
@@ -86,8 +86,8 @@ export default function Home() {
       </div>
 
       {/* 装饰元素 */}
-      <div className="fixed top-1/4 left-10 w-72 h-72 bg-blue-500/5 rounded-full blur-3xl" />
-      <div className="fixed bottom-1/4 right-10 w-72 h-72 bg-purple-500/5 rounded-full blur-3xl" />
+      <div className="fixed top-1/4 left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl" />
+      <div className="fixed bottom-1/4 right-10 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl" />
     </div>
   );
 }

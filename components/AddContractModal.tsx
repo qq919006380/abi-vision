@@ -27,21 +27,26 @@ const STANDARD_ABIS = {
     ERC721: erc721Abi,
     ERC4626: erc4626Abi,
 };
-
+const isAddress2 = (address: ContractData["address"]): boolean => {
+    return isAddress(address)
+}
 const formSchema = z.object({
     chainId: z.string().min(1, { message: "Please select a chain" }),
     name: z.string().min(1, { message: "Contract name is required" }),
-    address: z.string().min(1, { message: "Contract address is required" }).refine(isAddress, {
-        message: "Invalid contract address",
-    }),
-    abi: z.string().min(1, { message: "Contract ABI is required" }).refine((val) => {
-        try {
-            JSON.parse(val);
-            return true;
-        } catch {
-            return false;
-        }
-    }, { message: "Invalid JSON format" }),
+    address: z.string()
+        .min(1, { message: "Contract address is required" })
+        .refine(isAddress, { message: "Invalid contract address" })
+        .transform((val) => val as `0x${string}` | ""),
+    abi: z.string()
+        .min(1, { message: "Contract ABI is required" })
+        .refine((val) => {
+            try {
+                JSON.parse(val);
+                return true;
+            } catch {
+                return false;
+            }
+        }, { message: "Invalid JSON format" }),
 });
 
 interface Props extends ButtonProps {
@@ -65,7 +70,7 @@ export default function AddContractModal({ contract, className, ...buttonProps }
         defaultValues: {
             chainId: contract?.chainId.toString() ?? "",
             name: contract?.name ?? "",
-            address: contract?.address,
+            address: contract?.address ?? "",
             abi: contract ? JSON.stringify(contract.abi, null, 2) : "",
         },
     });
