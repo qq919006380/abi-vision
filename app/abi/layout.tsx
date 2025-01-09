@@ -45,7 +45,6 @@ export default function DashboardLayout({
         acc[contract.chainId].push(contract);
         return acc;
     }, {} as Record<number, ContractData[]>);
-
     return (
         <div className="flex min-h-screen">
             <div className="w-80 border-r bg-muted/30 p-6 space-y-6 ">
@@ -61,10 +60,10 @@ export default function DashboardLayout({
                             <AccordionTrigger className="hover:bg-accent/50 rounded-md px-2 [&[data-state=open]>svg]:text-primary">
                                 <div className="flex justify-between w-full items-center gap-2">
                                     <span className="font-medium text-sm">
-                                        {chains.find(chain => chain.id === Number(chainId))?.name}
+                                        {chains.find(chain => chain.id === Number(chainId))?.name||`ChainId: ${chainId}`}
                                     </span>
                                     <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
-                                        {chains.find(chain => chain.id === Number(chainId))?.id}
+                                        {chains.find(chain => chain.id === Number(chainId))?.id||chainId}
                                     </span>
                                 </div>
                             </AccordionTrigger>
@@ -78,7 +77,7 @@ export default function DashboardLayout({
                                         <div
                                             className={`
                                                 relative px-4 py-3 rounded-md
-                                                hover:bg-accent/50 transition-all duration-200
+                                                hover:bg-accent/50 border transition-all duration-200
                                                 ${activeContract?.address === contract.address &&
                                                     activeContract?.chainId === contract.chainId
                                                     ? "bg-accent text-accent-foreground before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-1 before:h-6 before:bg-primary before:rounded-full"

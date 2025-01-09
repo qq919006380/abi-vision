@@ -2,7 +2,7 @@ import { openDB } from 'idb';
 import { Abi } from 'viem';
 
 export interface ContractData {
-  address: string;
+  address: `0x${string}`;
   abi: Abi;
   chainId: number;
   name?: string;
