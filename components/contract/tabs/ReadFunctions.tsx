@@ -1,7 +1,6 @@
 "use client";
 import { ContractData } from "@/lib/db";
 import { useReadContract } from "wagmi";
-import { type ReadContractErrorType } from '@wagmi/core'
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RefreshCw } from "lucide-react";
