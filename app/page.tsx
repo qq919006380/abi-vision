@@ -1,6 +1,6 @@
-"use client"
+"use client";
 import { motion, useTransform, useMotionValue, useSpring, useScroll } from "motion/react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import AddContractModal from "@/components/AddContractModal";
 import { Database, Shield, Code, ArrowRight, Box } from "lucide-react";
 import { SiGithub } from '@icons-pack/react-simple-icons';
@@ -31,15 +31,36 @@ export default function Home() {
   const mouseY = useMotionValue(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+
   // 创建弹性动画效果
-  const rotateX = useSpring(useTransform(mouseY, [0, window?.innerHeight ?? 0], [15, -15]), {
+  const rotateX = useSpring(useTransform(mouseY, [0, dimensions.height], [15, -15]), {
     stiffness: 150,
     damping: 30
   });
-  const rotateY = useSpring(useTransform(mouseX, [0, window?.innerWidth ?? 0], [-15, 15]), {
+  const rotateY = useSpring(useTransform(mouseX, [0, dimensions.width], [-15, 15]), {
     stiffness: 150,
     damping: 30
   });
+
+  useEffect(() => {
+    // 设置初始尺寸
+    setDimensions({
+      width: window.innerWidth,
+      height: window.innerHeight
+    });
+
+    // 监听窗口尺寸变化
+    const handleResize = () => {
+      setDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -308,8 +329,8 @@ export default function Home() {
         className="fixed w-[500px] h-[500px] rounded-full"
         style={{
           background: "radial-gradient(circle, rgba(139,92,246,0.1) 0%, rgba(0,0,0,0) 70%)",
-          x: useTransform(mouseX, [0, window?.innerWidth ?? 0], [-250, 250]),
-          y: useTransform(mouseY, [0, window?.innerHeight ?? 0], [-250, 250])
+          x: useTransform(mouseX, [0, dimensions.width], [-250, 250]),
+          y: useTransform(mouseY, [0, dimensions.height], [-250, 250])
         }}
       />
     </div>
