@@ -1,8 +1,7 @@
-"use client"
 import AddContractModal from "@/components/AddContractModal";
 import { Database, Shield, Code, ArrowRight, Box } from "lucide-react";
 import { SiGithub } from '@icons-pack/react-simple-icons';
-
+import Image from 'next/image';
 import { Button } from "@/components/ui/button";
 import Link from 'next/link'
 
@@ -28,8 +27,51 @@ export default function Home() {
   return (
     <div className="relative min-h-screen overflow-hidden ">
       <div className="absolute bg-slate-300 inset-0 bg-[linear-gradient(to_right,#999_1px,transparent_1px),linear-gradient(to_bottom,#999_1px,transparent_1px)] bg-[size:50px_50px] opacity-30" />
-      
-      {/* 重新设计的主要内容区域 */}
+
+      {/* ERC20 Methods Display */}
+      <div className="absolute top-20 right-10 w-[400px] h-[300px] opacity-80 transform rotate-6">
+        <div className="bg-black rounded-lg p-4 text-white font-mono text-sm">
+          <div className="text-blue-400">balanceOf(address)</div>
+          <div className="text-green-400">1000000000000000000</div>
+          <div className="text-blue-400">allowance(address,address)</div>
+          <div className="text-green-400">500000000000000000</div>
+          <div className="text-blue-400">transfer(address,uint256)</div>
+          <div className="text-green-400">true</div>
+        </div>
+      </div>
+
+      {/* ERC721 Methods Display */}
+      <div className="absolute top-40 right-[300px] w-[400px] h-[300px] opacity-80 transform rotate-[-8deg]">
+        <div className="bg-black rounded-lg p-4 text-white font-mono text-sm">
+          <div className="text-blue-400">ownerOf(tokenId)</div>
+          <div className="text-green-400">0x742d35Cc6634C0532925a3b844Bc454e4438f44e</div>
+          <div className="text-blue-400">tokenURI(tokenId)</div>
+          <div className="text-green-400">"ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/1"</div>
+          <div className="text-blue-400">approve(address,tokenId)</div>
+          <div className="text-green-400">true</div>
+        </div>
+      </div>
+
+      {/* Original auction display */}
+      <div className="absolute top-60 right-[150px] w-[400px] h-[300px] opacity-80 transform rotate-12">
+        <div className="bg-black rounded-lg p-4 text-white font-mono text-sm">
+          <div className="text-blue-400">AUCTION_DROP_INTERVAL</div>
+          <div className="text-green-400">1200</div>
+          <div className="text-blue-400">AUCTION_START_PRICE</div>
+          <div className="text-green-400">1000000000000000000</div>
+        </div>
+      </div>
+
+      <div className="absolute top-20 left-10 max-w-[750px] opacity-30 transform rotate-[-13deg] shadow-2xl rounded-lg overflow-hidden border border-gray-200">
+        <Image
+          src="/c.jpg"
+          alt="ABI Vision Interface Demo"
+          width={750}
+          height={450}
+          className="w-full h-auto"
+        />
+      </div>
+      {/* Redesigned main content area */}
       <div className="relative container mx-auto px-4">
         <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* 左侧区域：标题和按钮 */}
@@ -42,7 +84,7 @@ export default function Home() {
               </h1>
               <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-blue-600 to-purple-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
             </div>
-            
+
             <p className="text-2xl text-gray-600">
               Visual Platform for Simplified Smart Contract Interaction
             </p>
@@ -52,7 +94,7 @@ export default function Home() {
               <Link href="https://github.com/qq919006380/abi-vision" target="_blank" rel="noopener noreferrer">
                 <Button variant="outline" className="group bg-white backdrop-blur-sm">
                   <SiGithub className="mr-2 h-4 w-4" />
-                  GitHub 
+                  GitHub
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Button>
               </Link>

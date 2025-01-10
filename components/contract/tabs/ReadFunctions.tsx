@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RefreshCw } from "lucide-react";
 import { AbiFunction } from "viem";
+import { ContractFunctionOutput } from "@/components/contract/ContractFunctionOutput";
 interface Props {
     contract: ContractData;
 }
@@ -39,23 +40,6 @@ function ReadFunctionCard({ contract, func }: { contract: ContractData; func: Ab
         chainId: contract.chainId,
     });
 
-    // Custom serializer to handle BigInt values
-    const formatData = (data: any) => {
-        // 首先处理 undefined 或 null 的情况
-        if (data === null || data === undefined) return '';
-        
-        // 然后处理其他类型
-        if (typeof data === 'string') return data;
-        if (typeof data === 'bigint') return data.toString();
-        
-        // 对于其他类型（数组、对象等）
-        try {
-            return JSON.stringify(data);
-        } catch (e) {
-            return ''; // 如果 JSON.stringify 失败，返回空字符串
-        }
-    };
-
     return (
         <Card>
             <CardHeader>
@@ -77,15 +61,12 @@ function ReadFunctionCard({ contract, func }: { contract: ContractData; func: Ab
                 </CardTitle>
             </CardHeader>
             <CardContent>
-                {isLoading ? (
-                    <div>Loading...</div>
-                ) : isError ? (
-                    <div className="text-destructive">{error.shortMessage}</div>
-                ) : (
-                    <div className="font-mono break-all">
-                        {formatData(data)}
-                    </div>
-                )}
+                <ContractFunctionOutput
+                    isLoading={isLoading}
+                    isError={isError}
+                    error={error}
+                    data={data}
+                />
             </CardContent>
         </Card>
     );
