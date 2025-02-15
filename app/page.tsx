@@ -167,7 +167,7 @@ export default function Home() {
         />
       </motion.div>
 
-      {/* 浮动代码块 - 随鼠标移动 */}
+
       <motion.div
         className="absolute top-20 right-10 w-[400px]"
         style={{
